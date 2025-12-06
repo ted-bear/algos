@@ -4,6 +4,7 @@ from second_lesson.task2 import LinkedList2, Node
 
 def reverse_linked_list(linked_list):
     """
+    Exercise 2.10. function to reverse linked_list
     Time complexity: O(n)
     Memory complexity: O(1)
 
@@ -25,6 +26,7 @@ def reverse_linked_list(linked_list):
 
 def has_cycle(linked_list):
     """
+    Exercise 2.11. function to find cycles in the linked_list
     Time complexity: O(n)
     Memory complexity: O(1)
 
@@ -48,6 +50,7 @@ def has_cycle(linked_list):
 
 def sort_list(linked_list):
     """
+    Exercise 2.12. function to sort the linked_list
     Time complexity: O(n*log(n))
     Memory complexity: O(1)
 
@@ -86,6 +89,7 @@ def sort_list(linked_list):
 
 def sort_and_merge_list(ll1, ll2):
     """
+    Exercise 2.12. function to merge two linked list
     Time complexity: O(n*log(n) + n)
     Memory complexity: O(1)
 

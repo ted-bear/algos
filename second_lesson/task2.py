@@ -26,6 +26,7 @@ class LinkedList2:
 
     def find(self, val):
         """
+        Exercise 2.1. function to find element
         Time complexity: O(n)
         Memory complexity: O(n)
 
@@ -43,6 +44,7 @@ class LinkedList2:
 
     def find_all(self, val):
         """
+        Exercise 2.2. function to find all elements
         Time complexity: O(n)
         Memory complexity: O(n)
 
@@ -61,6 +63,8 @@ class LinkedList2:
 
     def delete(self, val, all=False):
         """
+        Exercise 2.3/4. function to delete one/all elements
+        with val
         Time complexity: O(n)
         Memory complexity: O(1)
 
@@ -95,6 +99,7 @@ class LinkedList2:
 
     def clean(self):
         """
+        Exercise 2.7. function to clean linked list
         Time complexity: O(1)
         Memory complexity: O(1)
         """
@@ -104,6 +109,7 @@ class LinkedList2:
 
     def len(self):
         """
+        Exercise 2.7. function to get current length
         Time complexity: O(1)
         Memory complexity: O(1)
 
@@ -114,6 +120,7 @@ class LinkedList2:
 
     def insert(self, afterNode, newNode):
         """
+        Exercise 2.5. function to insert element after afterNode
         Time complexity: O(n)
         Memory complexity: O(1)
         """
@@ -148,6 +155,7 @@ class LinkedList2:
 
     def add_in_head(self, newNode):
         """
+        Exercise 2.6. function to insert element before head
         Time complexity: O(1)
         Memory complexity: O(1)
         """
