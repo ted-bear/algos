@@ -1,9 +1,12 @@
 from second_lesson.task2 import LinkedList2, Node
+from second_lesson.task2_2 import reverse_linked_list
+from second_lesson.task2_2 import has_cycle
+from second_lesson.task2_2 import sort_list
+from second_lesson.task2_2 import sort_and_merge_list
 import unittest
 
 if __name__ == '__main__':
     unittest.main()
-    print('Everything passed')
 
 class TestFind(unittest.TestCase):
 
@@ -36,7 +39,7 @@ class TestFind(unittest.TestCase):
 
     def test_many_el_found(self):
         # given
-        ll = create_linked_list()
+        ll = create_1234_linked_list()
         # when
         node = ll.find(2)
         # then
@@ -45,7 +48,7 @@ class TestFind(unittest.TestCase):
 
     def test_many_el_not_found(self):
         # given
-        ll = create_linked_list()
+        ll = create_1234_linked_list()
         # when
         node = ll.find(10)
         # then
@@ -96,7 +99,7 @@ class TestDelete(unittest.TestCase):
 
     def test_delete_head_el(self):
         # given
-        linked_list = create_linked_list()
+        linked_list = create_1234_linked_list()
         # when
         linked_list.delete(1)
         # then
@@ -106,7 +109,7 @@ class TestDelete(unittest.TestCase):
 
     def test_delete_tail_el(self):
         # given
-        linked_list = create_linked_list()
+        linked_list = create_1234_linked_list()
         # when
         linked_list.delete(4)
         # then
@@ -116,7 +119,7 @@ class TestDelete(unittest.TestCase):
 
     def test_delete_middle_el(self):
         # given
-        linked_list = create_linked_list()
+        linked_list = create_1234_linked_list()
         # when
         linked_list.delete(2)
         # then
@@ -467,13 +470,317 @@ class TestAddInHead(unittest.TestCase):
 
     def test_in_many(self):
         # given
-        ll = create_linked_list()
+        ll = create_1234_linked_list()
         # when
         ll.add_in_head(Node(3))
         # then
         self.assertEqual(5, ll.len())
         self.assertEqual(3, ll.head.value)
         self.assertEqual(4, ll.tail.value)
+
+class TestReverse(unittest.TestCase):
+
+    def test_empty(self):
+        # given
+        ll = LinkedList2()
+        # when
+        reverse_linked_list(ll)
+        # then
+        self.assertIsNone(ll.head)
+        self.assertIsNone(ll.tail)
+
+    def test_reverse(self):
+        # given
+        ll = create_1234_linked_list()
+        # when
+        reverse_linked_list(ll)
+
+        # then
+        self.assertEqual(ll.head.value, 4)
+        self.assertEqual(ll.tail.value, 1)
+        self.assertEqual(ll.head.next.value, 3)
+        self.assertEqual(ll.tail.prev.value, 2)
+
+    def test_single_el(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        # when
+        reverse_linked_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.tail.value, 1)
+
+    def test_reverse_two_el(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(2))
+        # when
+        reverse_linked_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 2)
+        self.assertEqual(ll.tail.value, 1)
+
+    def test_reverse_three_el(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(2))
+        ll.add_in_tail(Node(3))
+        # when
+        reverse_linked_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 3)
+        self.assertEqual(ll.tail.value, 1)
+        self.assertEqual(ll.head.next.value, ll.tail.prev.value)
+
+class TestHasCycle(unittest.TestCase):
+
+    def test_empty_list(self):
+        # given
+        ll = LinkedList2()
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertFalse(is_cycle)
+
+    def test_single_list_without(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertFalse(is_cycle)
+
+    def test_single_list_with(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        ll.head.next = ll.head
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertTrue(is_cycle)
+
+    def test_double_list_without(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(2))
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertFalse(is_cycle)
+
+    def test_double_list_with(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(2))
+        ll.tail.next = ll.head
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertTrue(is_cycle)
+
+    def test_many_el_without(self):
+        # given
+        ll = create_1234_linked_list()
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertFalse(is_cycle)
+
+    def test_many_el_with(self):
+        # given
+        ll = create_1234_linked_list()
+        ll.tail.next = ll.head.next
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertTrue(is_cycle)
+
+    def test_many_el_with_full(self):
+        # given
+        ll = create_1234_linked_list()
+        ll.tail.next = ll.head
+        # when
+        is_cycle = has_cycle(ll)
+        # then
+        self.assertTrue(is_cycle)
+
+class TestSortList(unittest.TestCase):
+
+    def test_empty_list(self):
+        # given
+        ll = LinkedList2()
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head, None)
+        self.assertEqual(ll.tail, None)
+
+    def test_single_el(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(1))
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.tail.value, 1)
+
+    def test_two_els(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(2))
+        ll.add_in_tail(Node(1))
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.tail.value, 2)
+
+    def test_three_els(self):
+        # given
+        ll = LinkedList2()
+        ll.add_in_tail(Node(2))
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(3))
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.head.next.value, 2)
+        self.assertEqual(ll.tail.value, 3)
+        self.assertEqual(ll.tail.prev.value, 2)
+
+    def test_many_els(self):
+        # given
+        ll = create_shuffled_linked_list()
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.head.next.value, 2)
+        self.assertEqual(ll.head.next.next.value, 3)
+        self.assertEqual(ll.head.next.next.next.value, 4)
+        self.assertEqual(ll.tail.value, 5)
+
+    def test_duplicated_els(self):
+        # given
+        ll = create_duplicated_linked_list()
+        # when
+        sort_list(ll)
+        # then
+        self.assertEqual(ll.head.value, 1)
+        self.assertEqual(ll.tail.value, 7)
+
+class TestSortAndMerge(unittest.TestCase):
+
+    def test_empty_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll2 = LinkedList2()
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head, None)
+        self.assertEqual(merged.tail, None)
+
+    def test_single_and_empty_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll1.add_in_head(Node(1))
+        ll2 = LinkedList2()
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.tail.value, 1)
+
+    def test_empty_and_single_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll2 = LinkedList2()
+        ll2.add_in_head(Node(1))
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.tail.value, 1)
+
+    def test_single_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll1.add_in_head(Node(2))
+        ll2 = LinkedList2()
+        ll2.add_in_head(Node(1))
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.head.prev, None)
+        self.assertEqual(merged.tail.value, 2)
+        self.assertEqual(merged.tail.next, None)
+
+    def test_single_two_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll1.add_in_head(Node(2))
+        ll2 = LinkedList2()
+        ll2.add_in_head(Node(1))
+        ll2.add_in_head(Node(6))
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.head.prev, None)
+        self.assertEqual(merged.head.next.value, 2)
+        self.assertEqual(merged.tail.value, 6)
+        self.assertEqual(merged.tail.next, None)
+
+    def test_single_many_lists(self):
+        # given
+        ll1 = LinkedList2()
+        ll1.add_in_head(Node(8))
+        ll2 = create_shuffled_linked_list()
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.head.prev, None)
+        self.assertEqual(merged.tail.value, 8)
+        self.assertEqual(merged.tail.next, None)
+
+    def test_many_els(self):
+        # given
+        ll1 = create_1234_linked_list()
+        ll2 = create_shuffled_linked_list()
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.head.prev, None)
+        self.assertEqual(merged.tail.value, 5)
+        self.assertEqual(merged.tail.next, None)
+        self.assertEqual(merged.len(), 9)
+
+    def test_many_duplicated_els(self):
+        # given
+        ll1 = create_duplicated_linked_list()
+        ll2 = create_shuffled_linked_list()
+        # when
+        merged = sort_and_merge_list(ll1, ll2)
+        # then
+        self.assertEqual(merged.head.value, 1)
+        self.assertEqual(merged.head.prev, None)
+        self.assertEqual(merged.tail.value, 7)
+        self.assertEqual(merged.tail.next, None)
+        self.assertEqual(merged.len(), ll2.len() + ll1.len())
+
 
 def create_head_linked_list():
     node1 = Node(1)
@@ -529,7 +836,7 @@ def create_duplicated_linked_list():
     return list
 
 
-def create_linked_list():
+def create_1234_linked_list():
     node1 = Node(1)
     node2 = Node(2)
     node3 = Node(3)
@@ -540,4 +847,19 @@ def create_linked_list():
     list.add_in_tail(node2)
     list.add_in_tail(node3)
     list.add_in_tail(node4)
+    return list
+
+def create_shuffled_linked_list():
+    node1 = Node(1)
+    node2 = Node(2)
+    node3 = Node(3)
+    node4 = Node(4)
+    node5 = Node(5)
+
+    list = LinkedList2()
+    list.add_in_tail(node2)
+    list.add_in_tail(node1)
+    list.add_in_tail(node5)
+    list.add_in_tail(node4)
+    list.add_in_tail(node3)
     return list
