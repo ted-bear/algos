@@ -139,11 +139,11 @@ class LinkedList2:
         cur = self.head
 
         while cur is not None:
-            if cur is afterNode:
+            if cur == afterNode:
                 self.size += 1
-                if cur is self.tail:
+                if cur == self.tail:
                     self.tail.next = newNode
-                    newNode.prev = self.tail.prev
+                    newNode.prev = self.tail
                     self.tail = newNode
                 else:
                     newNode.prev = cur

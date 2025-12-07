@@ -264,15 +264,18 @@ class TestInsert(unittest.TestCase):
         linked_list = LinkedList2()
         node1 = Node(1)
         node2 = Node(2)
+        node3 = Node(3)
 
         # when
         linked_list.insert(None, node1)
         linked_list.insert(node1, node2)
+        linked_list.insert(None, node3)
 
         # then
-        self.assertEqual(2, linked_list.len())
+        self.assertEqual(3, linked_list.len())
         self.assertEqual(1, linked_list.head.value)
-        self.assertEqual(2, linked_list.tail.value)
+        self.assertEqual(3, linked_list.tail.value)
+        self.assertEqual(2, linked_list.tail.prev.value)
 
     def test_insert_last_el(self):
         # given
@@ -311,6 +314,78 @@ class TestInsert(unittest.TestCase):
         self.assertEqual(1, linked_list.head.value)
         self.assertEqual(3, linked_list.tail.value)
         self.assertEqual(4, linked_list.head.next.next.value)
+
+    def test_insert_after_middle(self):
+        node1 = Node(1)
+        node2 = Node(2)
+        node3 = Node(3)
+        node5 = Node(5)
+        ll = LinkedList2()
+        ll.add_in_tail(node1)
+        ll.add_in_tail(node2)
+        ll.add_in_tail(node3)
+        ll.add_in_tail(node5)
+
+        # when
+        node4 = Node(4)
+        ll.insert(node3, node4)
+
+        # then
+        self.assertEqual(5, ll.len())
+        self.assertEqual(1, ll.head.value)
+        self.assertEqual(2, ll.head.next.value)
+        self.assertEqual(3, ll.head.next.next.value)
+        self.assertEqual(4, ll.head.next.next.next.value)
+        self.assertEqual(5, ll.head.next.next.next.next.value)
+        self.assertEqual(5, ll.tail.value)
+        self.assertEqual(4, ll.tail.prev.value)
+        self.assertEqual(3, ll.tail.prev.prev.value)
+        self.assertEqual(2, ll.tail.prev.prev.prev.value)
+        self.assertEqual(1, ll.tail.prev.prev.prev.prev.value)
+
+    def test_insert_after_tail(self):
+        node1 = Node(1)
+        node2 = Node(2)
+        node3 = Node(3)
+        node4 = Node(4)
+        ll = LinkedList2()
+        ll.add_in_tail(node1)
+        ll.add_in_tail(node2)
+        ll.add_in_tail(node3)
+        ll.add_in_tail(node4)
+
+        # when
+        node5 = Node(5)
+        ll.insert(node4, node5)
+
+        # then
+        self.assertEqual(5, ll.len())
+        self.assertEqual(1, ll.head.value)
+        self.assertEqual(2, ll.head.next.value)
+        self.assertEqual(3, ll.head.next.next.value)
+        self.assertEqual(4, ll.head.next.next.next.value)
+        self.assertEqual(5, ll.head.next.next.next.next.value)
+        self.assertEqual(5, ll.tail.value)
+        self.assertEqual(4, ll.tail.prev.value)
+        self.assertEqual(3, ll.tail.prev.prev.value)
+        self.assertEqual(2, ll.tail.prev.prev.prev.value)
+        self.assertEqual(1, ll.tail.prev.prev.prev.prev.value)
+
+
+    def test_insert_in_tail(self):
+        # given
+        ll = create_1234_linked_list()
+        node10 = Node(10)
+
+        # when
+        ll.insert(None, node10)
+
+        # then
+        self.assertEqual(5, ll.len())
+        self.assertEqual(1, ll.head.value)
+        self.assertEqual(10, ll.tail.value)
+        self.assertEqual(4, ll.tail.prev.value)
+
 
 class TestClean(unittest.TestCase):
 
@@ -477,6 +552,19 @@ class TestAddInHead(unittest.TestCase):
         self.assertEqual(5, ll.len())
         self.assertEqual(3, ll.head.value)
         self.assertEqual(4, ll.tail.value)
+
+    def test_many_els(self):
+        # given
+        ll = create_shuffled_linked_list()
+        # when
+        ll.add_in_head(Node(8))
+        # then
+        self.assertEqual(6, ll.len())
+        self.assertIsNone(ll.head.prev)
+        self.assertEqual(8, ll.head.value)
+        self.assertEqual(2, ll.head.next.value)
+        self.assertEqual(8, ll.head.next.prev.value)
+        self.assertEqual(3, ll.tail.value)
 
 class TestReverse(unittest.TestCase):
 
