@@ -1,5 +1,6 @@
 import unittest
 from third_task.task3 import DynArray
+from third_task.task3_2 import BankDynArray, MultiDimensionalArray
 
 if __name__ == "__main__":
     unittest.main()
@@ -359,6 +360,121 @@ class TestMulti(unittest.TestCase):
         self.assertEqual(20, array.__getitem__(array.count - 1))
         self.assertEqual(28, array.capacity)
         self.assertEqual(20, array.count)
+
+
+class TestBankDynArray(unittest.TestCase):
+
+    def test_create(self):
+        # given
+        # when
+        arr = BankDynArray()
+        # then
+        self.assertEqual(0, arr.count)
+        self.assertEqual(16, arr.capacity)
+        self.assertEqual(0, arr.operations_count)
+
+    def test_append_single_el(self):
+        # given
+        arr = BankDynArray()
+        # when
+        arr.append(10)
+        # then
+        self.assertEqual(1, arr.count)
+        self.assertEqual(10, arr.__getitem__(0))
+        self.assertEqual(16, arr.capacity)
+        self.assertEqual(3, arr.operations_count)
+
+    def test_insert_single_el(self):
+        # given
+        arr = BankDynArray()
+        # when
+        arr.insert(0, 10)
+        # then
+        self.assertEqual(1, arr.count)
+        self.assertEqual(10, arr.__getitem__(0))
+        self.assertEqual(16, arr.capacity)
+        self.assertEqual(3, arr.operations_count)
+
+    def test_append_four_els(self):
+        # given
+        arr = BankDynArray()
+        # when
+        arr.append(10)
+        arr.append(11)
+        arr.append(12)
+        arr.append(13)
+        arr.append(14)
+        arr.append(15)
+        # then
+        self.assertEqual(6, arr.count)
+        self.assertEqual(32, arr.capacity)
+        self.assertEqual(17, arr.operations_count)
+
+    def test_insert_four_els(self):
+        # given
+        arr = BankDynArray()
+        # when
+        arr.insert(0, 10)
+        arr.insert(1, 11)
+        arr.insert(2, 12)
+        arr.insert(3, 13)
+        arr.insert(4, 14)
+        arr.insert(5, 15)
+        # then
+        self.assertEqual(6, arr.count)
+        self.assertEqual(32, arr.capacity)
+        self.assertEqual(17, arr.operations_count)
+
+
+class TestMultiDimensionArray(unittest.TestCase):
+
+    def test_create_append(self):
+        # given
+        arr = MultiDimensionalArray([2, 5])
+        # when
+        arr.append([0, 1], 10)
+        arr.append([1, 2], 11)
+        # then
+        self.assertEqual(10, arr.getByIndex([0, 1, 0]))
+        self.assertEqual(11, arr.getByIndex([1, 2, 0]))
+
+    def test_three_dim(self):
+        # given
+        arr = MultiDimensionalArray([2, 2, 5])
+        # when
+        arr.append([1, 0, 0], 10)
+        # then
+        self.assertEqual(10, arr.getByIndex([1, 0, 0, 0]))
+
+    def test_insert(self):
+        # given
+        arr = MultiDimensionalArray([2, 2, 5])
+        # when
+        arr.append([1, 0, 0], 1)
+        arr.append([1, 0, 0], 2)
+        arr.append([1, 0, 0], 3)
+        arr.insert([1, 0, 0, 1], 4)
+        # then
+        self.assertEqual(1, arr.getByIndex([1, 0, 0, 0]))
+        self.assertEqual(4, arr.getByIndex([1, 0, 0, 1]))
+        self.assertEqual(2, arr.getByIndex([1, 0, 0, 2]))
+        self.assertEqual(3, arr.getByIndex([1, 0, 0, 3]))
+
+    def test_delete(self):
+        arr = MultiDimensionalArray([2, 2, 5])
+        # when
+        arr.append([1, 0, 0], 1)
+        arr.append([1, 0, 0], 2)
+        arr.append([1, 0, 0], 3)
+        arr.insert([1, 0, 0, 1], 4)
+        arr.delete([1, 0, 0, 1])
+        # then
+        self.assertEqual(1, arr.getByIndex([1, 0, 0, 0]))
+        self.assertEqual(2, arr.getByIndex([1, 0, 0, 1]))
+        self.assertEqual(3, arr.getByIndex([1, 0, 0, 2]))
+        with self.assertRaises(IndexError):
+            arr.getByIndex([1, 0, 0, 3])
+
 
 def get_1234_array():
     arr = DynArray()
