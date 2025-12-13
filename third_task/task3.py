@@ -54,19 +54,25 @@ class DynArray:
 
     def delete(self, i):
         """
-        Exercise 5.2: insert
+        Exercise 5.2: delete
         Time complexity: O(n)
         Memory complexity: O(1)
         """
         if i < 0 or i >= self.count:
             raise IndexError('Index is out of bounds')
 
-        self.move_left_elements(i)
+        for j in range(i, self.count - 1):
+            self.array[j] = self.array[j + 1]
+
         self.count -= 1
+        new_arr = self.make_array(self.capacity)
+        for i in range(self.count):
+            new_arr[i] = self.array[i]
+        self.array = new_arr
         self.squeeze()
 
     def squeeze(self):
-        if self.count / self.capacity < 0.5:
+        if self.count * 2 < self.capacity:
             new_capacity = int(self.capacity // 1.5)
             if new_capacity > 16:
                 self.resize(new_capacity)
@@ -74,7 +80,3 @@ class DynArray:
     def move_right_elements(self, idx_from):
         for i in range(self.count, idx_from, -1):
             self.array[i] = self.array[i - 1]
-
-    def move_left_elements(self, idx_from):
-        for i in range(idx_from, self.count - 1):
-            self.array[i] = self.array[i + 1]

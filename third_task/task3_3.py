@@ -73,50 +73,6 @@ class TestMove(unittest.TestCase):
         # then
         self.assertEqual(5, array.array[4])
 
-    def test_left_last(self):
-        # given
-        array = get_1234_array()
-        # when
-        array.move_left_elements(3)
-        # then
-        self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(2, array.__getitem__(1))
-        self.assertEqual(3, array.__getitem__(2))
-        self.assertEqual(4, array.__getitem__(3))
-
-    def test_left_first(self):
-        # given
-        array = get_1234_array()
-        # when
-        array.move_left_elements(0)
-        # then
-        self.assertEqual(2, array.__getitem__(0))
-        self.assertEqual(3, array.__getitem__(1))
-        self.assertEqual(4, array.__getitem__(2))
-        self.assertEqual(4, array.__getitem__(3))
-
-    def test_left_middle(self):
-        # given
-        array = get_1234_array()
-        # when
-        array.move_left_elements(2)
-        # then
-        self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(2, array.__getitem__(1))
-        self.assertEqual(4, array.__getitem__(2))
-        self.assertEqual(4, array.__getitem__(3))
-
-    def test_left(self):
-        # given
-        array = get_1234_array()
-        # when
-        array.move_left_elements(1)
-        # then
-        self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(3, array.__getitem__(1))
-        self.assertEqual(4, array.__getitem__(2))
-        self.assertEqual(4, array.__getitem__(3))
-
 
 class TestInsert(unittest.TestCase):
 
@@ -256,6 +212,38 @@ class TestDelete(unittest.TestCase):
         self.assertEqual(3, array.__getitem__(2))
         self.assertEqual(3, array.count)
         self.assertEqual(16, array.capacity)
+
+    def test_delete_all_from_tail(self):
+        # given
+        array = get_1234_array()
+        # when
+        array.delete(3)
+        array.delete(2)
+        array.delete(1)
+        array.delete(0)
+        # then
+        self.assertEqual(0, array.count)
+        self.assertEqual(16, array.capacity)
+        with self.assertRaises(IndexError):
+            array.__getitem__(0)
+            array.__getitem__(1)
+            array.__getitem__(2)
+
+    def test_delete_all_from_start(self):
+        # given
+        array = get_1234_array()
+        # when
+        array.delete(0)
+        array.delete(0)
+        array.delete(0)
+        array.delete(0)
+        # then
+        self.assertEqual(0, array.count)
+        self.assertEqual(16, array.capacity)
+        with self.assertRaises(IndexError):
+            array.__getitem__(0)
+            array.__getitem__(1)
+            array.__getitem__(2)
 
     def test_delete_first_without_resize(self):
         # given
