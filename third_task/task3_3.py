@@ -201,6 +201,49 @@ class TestInsert(unittest.TestCase):
 
 class TestDelete(unittest.TestCase):
 
+    def test_squeeze_after_delete(self):
+        # given
+        array = get_full_array()
+        self.assertEqual(16, array.capacity)
+        self.assertEqual(16, array.count)
+
+        for i in range(16):
+            array.append(i + 17)
+        self.assertEqual(32, array.capacity)
+        self.assertEqual(32, array.count)
+
+        # when
+        array.delete(16)
+
+        # then
+        self.assertEqual(31, array.count)
+        self.assertEqual(32, array.capacity)
+        for i in range(31):
+            if i >= 16:
+                self.assertEqual(i + 2, array.array[i])
+                continue
+            self.assertEqual(i + 1, array.array[i])
+
+        # when
+        for i in range(15):
+            array.delete(array.count - 1)
+        self.assertEqual(32, array.capacity)
+        self.assertEqual(16, array.count)
+
+        array.delete(array.count - 1)
+        self.assertEqual(21, array.capacity)
+        self.assertEqual(15, array.count)
+
+        for i in range(4):
+            array.delete(array.count - 1)
+        self.assertEqual(21, array.capacity)
+        self.assertEqual(11, array.count)
+
+        array.delete(array.count - 1)
+        self.assertEqual(16, array.capacity)
+        self.assertEqual(10, array.count)
+
+
     def test_delete_last_without_resize(self):
         # given
         array = get_1234_array()
@@ -316,7 +359,7 @@ class TestMulti(unittest.TestCase):
             array.delete(array.count - 1)
         self.assertEqual(1, array.count)
         self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(21, array.capacity)
+        self.assertEqual(16, array.capacity)
 
         # step 6: add elements
         for i in range(2, 22):

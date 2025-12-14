@@ -73,9 +73,9 @@ class DynArray:
 
     def squeeze(self):
         if self.count * 2 < self.capacity:
-            new_capacity = int(self.capacity // 1.5)
-            if new_capacity > 16:
-                self.resize(new_capacity)
+            evaluated = int(self.capacity // 1.5)
+            new_capacity = evaluated if evaluated > 16 else 16
+            self.resize(new_capacity)
 
     def move_right_elements(self, idx_from):
         for i in range(self.count, idx_from, -1):
