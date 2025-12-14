@@ -362,35 +362,35 @@ class TestMulti(unittest.TestCase):
         self.assertEqual(16, array.capacity)
 
         # step 6: add elements
-        for i in range(2, 22):
+        for i in range(2, 17):
             array.append(i)
         self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(21, array.__getitem__(array.count - 1))
-        self.assertEqual(21, array.capacity)
-        self.assertEqual(21, array.count)
+        self.assertEqual(16, array.__getitem__(array.count - 1))
+        self.assertEqual(16, array.capacity)
+        self.assertEqual(16, array.count)
 
         # step 7: add element and expand array
-        array.append(22)
+        array.append(17)
         self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(22, array.__getitem__(array.count - 1))
-        self.assertEqual(42, array.capacity)
-        self.assertEqual(22, array.count)
+        self.assertEqual(17, array.__getitem__(array.count - 1))
+        self.assertEqual(32, array.capacity)
+        self.assertEqual(17, array.count)
 
         # step 8: fills array
-        for i in range(23, 43):
+        for i in range(18, 33):
             array.append(i)
         self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(42, array.__getitem__(array.count - 1))
-        self.assertEqual(42, array.capacity)
-        self.assertEqual(42, array.count)
+        self.assertEqual(32, array.__getitem__(array.count - 1))
+        self.assertEqual(32, array.capacity)
+        self.assertEqual(32, array.count)
 
         # step 9: delete element for squeezing
         for i in range(22):
             array.delete(array.count - 1)
         self.assertEqual(1, array.__getitem__(0))
-        self.assertEqual(20, array.__getitem__(array.count - 1))
-        self.assertEqual(28, array.capacity)
-        self.assertEqual(20, array.count)
+        self.assertEqual(10, array.__getitem__(array.count - 1))
+        self.assertEqual(16, array.capacity)
+        self.assertEqual(10, array.count)
 
 
 class TestBankDynArray(unittest.TestCase):
