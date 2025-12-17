@@ -2,6 +2,4 @@
 ./**/__pycache__/
 __pycache__/
 .idea/
-
-test_1.yaml
-test_2.yaml
+tmp/
