@@ -1,6 +1,7 @@
 import unittest
 from stack.task4 import Stack
 from stack.task4_2 import is_valid_brackets
+from stack.task4_2 import evaluate_in_postfix
 
 if __name__ == "__main__":
     unittest.main()
@@ -527,6 +528,55 @@ class TestGetAverage(unittest.TestCase):
             # then
             self.assertEqual(avg_expected, avg)
 
+class TestPrefixExpressionEvaluator(unittest.TestCase):
+
+    def test_empty_exp(self):
+        # given
+        exp = ''
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(None, res)
+
+    def test_single_exp(self):
+        # given
+        exp = '1 ='
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(1, int(res))
+
+    def test_sum_exp(self):
+        # given
+        exp = '1 1 + ='
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(2, int(res))
+
+    def test_multiply_exp(self):
+        # given
+        exp = '2 2 * ='
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(4, int(res))
+
+    def test_multiply_and_sum_exp(self):
+        # given
+        exp = '2 2 * 3 + ='
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(7, int(res))
+
+    def test_from_example(self):
+        # given
+        exp = '8 2 + 5 * 9 + ='
+        # when
+        res = evaluate_in_postfix(exp)
+        # then
+        self.assertEqual(59, int(res))
 
 
 def generate_stack_for_min():

@@ -1,4 +1,5 @@
-from stack.task4 import Stack
+from stack.task4 import Stack, HeadStack
+
 
 def is_valid_brackets(brackets):
     """
@@ -28,3 +29,41 @@ def is_valid_brackets(brackets):
             else:
                 return False
     return opening.size() == 0
+
+def evaluate_in_postfix(expression):
+    """
+    Exercise 4.9. Вычислить выражение в постфиксной записи
+
+    Рефлексия: Опять спотыкаюсь о типизацию, выглядит несложно,
+    но много мелких деталей, о которых нужно на забыть
+
+    Time complexity: O(n)
+    Memory complexity: O(n)
+    """
+    if len(expression) == 0:
+        return None
+    el_stack = HeadStack()
+    exp_stack = place_to_stack(expression)
+    cur_el = exp_stack.pop()
+    while cur_el != '=':
+        if cur_el == '+':
+            el_1 = int(el_stack.pop())
+            el_2 = int(el_stack.pop())
+            new_el = el_1 + el_2
+            el_stack.push(new_el)
+        elif cur_el == '*':
+            el_1 = int(el_stack.pop())
+            el_2 = int(el_stack.pop())
+            new_el = el_1 * el_2
+            el_stack.push(new_el)
+        else:
+            el_stack.push(cur_el)
+        cur_el = exp_stack.pop()
+    return el_stack.pop()
+
+def place_to_stack(expression):
+    stack = HeadStack()
+    arr = expression.split(' ')
+    for i in range(len(arr) - 1, -1, -1):
+        stack.push(arr[i])
+    return stack
