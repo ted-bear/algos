@@ -415,7 +415,7 @@ class TestGetMinimum(unittest.TestCase):
     def test_min_somewhere(self):
         for i in range(1000):
             # given
-            stack, el = generate_stack()
+            stack, el = generate_stack_for_min()
             # when
             min_el = stack.get_minimum()
             # then
@@ -464,7 +464,72 @@ class TestGetMinimum(unittest.TestCase):
         # then
         self.assertEqual(7, min_el)
 
-def generate_stack():
+class TestGetAverage(unittest.TestCase):
+
+    def test_empty(self):
+        # given
+        stack = Stack()
+        # when
+        avg = stack.get_average()
+        # then
+        self.assertEqual(None, avg)
+
+    def test_single_el(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        # when
+        avg = stack.get_average()
+        # then
+        self.assertEqual(1, avg)
+
+    def test_two_els(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        stack.push(3)
+        # when
+        avg = stack.get_average()
+        # then
+        self.assertEqual(2, avg)
+
+    def test_many_els(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        stack.push(3)
+        stack.push(11)
+        stack.push(1)
+        # when
+        avg = stack.get_average()
+        # then
+        self.assertEqual(4, avg)
+
+    def test_many_after_del(self):
+        # given
+        stack = Stack()
+        stack.push(2)
+        stack.push(14)
+        stack.push(11)
+        stack.push(2)
+        # when
+        stack.pop()
+        avg = stack.get_average()
+        # then
+        self.assertEqual(9, avg)
+
+    def test_many_random_els(self):
+        for i in range(1000):
+            # given
+            stack, avg_expected = generate_stack_for_avg()
+            # when
+            avg = stack.get_average()
+            # then
+            self.assertEqual(avg_expected, avg)
+
+
+
+def generate_stack_for_min():
     import random
     stack = Stack()
     rand_size = random.randint(1, 100)
@@ -474,3 +539,15 @@ def generate_stack():
         stack.push(el)
         min_el = min(el, min_el)
     return stack, min_el
+
+def generate_stack_for_avg():
+    import random
+    stack = Stack()
+    rand_size = random.randint(1, 100)
+    sums = 0
+    for i in range(rand_size):
+        el = random.randint(-100, 100)
+        stack.push(el)
+        sums += el
+    avg = sums / rand_size
+    return stack, avg

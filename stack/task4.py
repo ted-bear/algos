@@ -9,6 +9,7 @@ class Stack:
     def __init__(self):
         self.stack = []
         self.min_stack = []
+        self.avg_stack = []
 
     def size(self):
         return len(self.stack)
@@ -22,6 +23,8 @@ class Stack:
         if len(self.stack) == 0:
             return None
         self.min_stack.pop()
+        if type(self.stack[-1]) == int:
+            self.avg_stack.pop()
         return self.stack.pop()
 
     def push(self, value):
@@ -30,17 +33,23 @@ class Stack:
         Time complexity: o(n)
         Memory complexity: O(1)
         """
-
-        self.evaluate_min(value)
+        self.__evaluate_min(value)
+        self.__evaluate_avg(value)
         return self.stack.append(value)
 
-    def evaluate_min(self, value):
+    def __evaluate_min(self, value):
         if self.size() > 0:
             cur_min = self.min_stack[-1]
             new_min = cur_min if cur_min < value else value
             self.min_stack.append(new_min)
         else:
             self.min_stack.append(value)
+
+    def __evaluate_avg(self, value):
+        if type(value) == int:
+            cur_sum = 0 if self.size() == 0 else self.avg_stack[-1]
+            new_sum = cur_sum + value
+            self.avg_stack.append(new_sum)
 
 
     def peek(self):
@@ -69,6 +78,21 @@ class Stack:
         if self.size() == 0:
             return None
         return self.min_stack[self.size() - 1]
+
+    def get_average(self):
+        """
+        Exercise 4.7. Return average of all elements
+
+        Рефлексия: Хахахахха, проверки на тип в питоне,
+        вот это поворот, теперь есть наглядное представление
+        зачем нужна статическая типизация
+
+        Time complexity: O(1)
+        Memory complexity: O(1)
+        """
+        if self.size() == 0 or type(self.avg_stack[-1]) != int:
+            return None
+        return self.avg_stack[-1] / self.size()
 
 
 class HeadStack:
