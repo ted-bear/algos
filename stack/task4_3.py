@@ -350,3 +350,127 @@ class TestBracketsValidation(unittest.TestCase):
         is_valid = is_valid_brackets(brackets)
         # then
         self.assertTrue(is_valid)
+
+class TestGetMinimum(unittest.TestCase):
+
+    def test_empty_stack(self):
+        # given
+        stack = Stack()
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertIsNone(min_el)
+
+    def test_one_el_stack(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_two_min_in_head(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        stack.push(2)
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_min_in_tail(self):
+        # given
+        stack = Stack()
+        stack.push(2)
+        stack.push(1)
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_min_in_middle(self):
+        # given
+        stack = Stack()
+        stack.push(2)
+        stack.push(1)
+        stack.push(3)
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_all_min(self):
+        # given
+        stack = Stack()
+        stack.push(1)
+        stack.push(1)
+        stack.push(1)
+        # when
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_min_somewhere(self):
+        for i in range(1000):
+            # given
+            stack, el = generate_stack()
+            # when
+            min_el = stack.get_minimum()
+            # then
+            self.assertEqual(el, min_el)
+
+    def test_min_after_del_not_min(self):
+        # given
+        stack = Stack()
+        stack.push(5)
+        stack.push(7)
+        stack.push(1)
+        stack.push(2)
+        # when
+        min_el = stack.get_minimum()
+        stack.pop()
+        # then
+        self.assertEqual(1, min_el)
+
+    def test_min_after_del_min(self):
+        # given
+        stack = Stack()
+        stack.push(7)
+        stack.push(2)
+        stack.push(3)
+        stack.push(1)
+        # when
+        stack.pop()
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(2, min_el)
+
+    def test_min_after_del_two_mins(self):
+        # given
+        stack = Stack()
+        stack.push(9)
+        stack.push(10)
+        stack.push(7)
+        stack.push(2)
+        stack.push(3)
+        stack.push(1)
+        # when
+        stack.pop()
+        stack.pop()
+        stack.pop()
+        min_el = stack.get_minimum()
+        # then
+        self.assertEqual(7, min_el)
+
+def generate_stack():
+    import random
+    stack = Stack()
+    rand_size = random.randint(1, 100)
+    min_el = 101
+    for i in range(rand_size):
+        el = random.randint(-100, 100)
+        stack.push(el)
+        min_el = min(el, min_el)
+    return stack, min_el
