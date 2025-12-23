@@ -1,4 +1,5 @@
 import unittest
+
 from queue.task5 import Queue
 
 if __name__ == "__main__":
@@ -55,8 +56,6 @@ class TestEnqueueAndSize(unittest.TestCase):
         self.assertEqual(9, queue.size())
         self.assertEqual(0, deq_el)
 
-
-
 class TestDequeueAndSize(unittest.TestCase):
 
     def test_single_el(self):
@@ -101,3 +100,82 @@ class TestDequeueAndSize(unittest.TestCase):
         for i in range(10):
             queue.enqueue(i)
         return queue
+
+class TestRotate(unittest.TestCase):
+
+    def test_single(self):
+        # given
+        queue = Queue()
+        queue.enqueue(1)
+        # when
+        queue.rotate(0)
+        # then
+        self.assertEqual(1, queue.size())
+        self.assertEqual(1, queue.storage[0])
+
+    def test_throws_error(self):
+        # given
+        queue = Queue()
+        queue.enqueue(1)
+        # when
+        with self.assertRaises(IndexError):
+            queue.rotate(-1)
+        # then
+        self.assertEqual(1, queue.size())
+        self.assertEqual(1, queue.storage[0])
+
+    def test_two_els_by_one(self):
+        # given
+        queue = Queue()
+        queue.enqueue(2)
+        queue.enqueue(1)
+        # when
+        queue.rotate(1)
+        # then
+        self.assertEqual(2, queue.size())
+        self.assertEqual(1, queue.storage[0])
+        self.assertEqual(2, queue.storage[1])
+
+    def test_two_els_by_two(self):
+        # given
+        queue = Queue()
+        queue.enqueue(2)
+        queue.enqueue(1)
+        # when
+        queue.rotate(2)
+        # then
+        self.assertEqual(2, queue.size())
+        self.assertEqual(2, queue.storage[0])
+        self.assertEqual(1, queue.storage[1])
+
+    def test_four_els_by_zero(self):
+        # given
+        queue = Queue()
+        queue.enqueue(4)
+        queue.enqueue(3)
+        queue.enqueue(2)
+        queue.enqueue(1)
+        # when
+        queue.rotate(0)
+        # then
+        self.assertEqual(4, queue.size())
+        self.assertEqual(4, queue.storage[0])
+        self.assertEqual(3, queue.storage[1])
+        self.assertEqual(2, queue.storage[2])
+        self.assertEqual(1, queue.storage[3])
+
+    def test_four_els_by_one(self):
+        # given
+        queue = Queue()
+        queue.enqueue(4)
+        queue.enqueue(3)
+        queue.enqueue(2)
+        queue.enqueue(1)
+        # when
+        queue.rotate(1)
+        # then
+        self.assertEqual(4, queue.size())
+        self.assertEqual(1, queue.storage[0])
+        self.assertEqual(4, queue.storage[1])
+        self.assertEqual(3, queue.storage[2])
+        self.assertEqual(2, queue.storage[3])

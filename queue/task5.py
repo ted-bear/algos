@@ -1,3 +1,6 @@
+from argparse import ArgumentError
+
+
 class Queue:
 
     def __init__(self):
@@ -35,3 +38,21 @@ class Queue:
         Memory complexity: O(1)
         """
         return self.capacity
+
+    def rotate(self, count):
+        """
+        Exercise 5.3.
+
+        Рефлексия: Сначала сделал очередь на связном списке
+        потом понял, что тогда вращение будет за Линейное
+        время, но, видимо, переписывание ничего не дало
+
+        Time complexity: O(N)
+        Memory complexity: O(1)
+        """
+        if count < 0:
+            raise IndexError("Rotate number less then 0")
+
+        rotate_num = count % self.capacity
+        if rotate_num != 0:
+            self.storage =  self.storage[-rotate_num:] + self.storage[:-rotate_num]
