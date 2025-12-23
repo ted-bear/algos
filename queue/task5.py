@@ -56,3 +56,15 @@ class Queue:
         rotate_num = count % self.capacity
         if rotate_num != 0:
             self.storage =  self.storage[-rotate_num:] + self.storage[:-rotate_num]
+
+    def reverse(self):
+        """
+        Exercise 5.5. Reverse
+
+        Рефлексия: Как же хороши эти слайсы
+        хоть и работают за линейное время
+
+        Time complexity: O(N)
+        Memory complexity: O(1)
+        """
+        self.storage = self.storage[::-1]

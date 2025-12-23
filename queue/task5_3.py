@@ -269,3 +269,55 @@ class TestStackDequeueAndSize(unittest.TestCase):
         for i in range(10):
             queue.enqueue(i)
         return queue
+
+class TestReverse(unittest.TestCase):
+
+    def test_empty_el(self):
+        # given
+        queue = Queue()
+        # when
+        queue.reverse()
+        # then
+        self.assertEqual(0, queue.size())
+        self.assertEqual(None, queue.dequeue())
+
+    def test_single_el(self):
+        # given
+        queue = Queue()
+        queue.enqueue(1)
+        # when
+        queue.reverse()
+        # then
+        self.assertEqual(1, queue.size())
+        self.assertEqual(1, queue.dequeue())
+
+    def test_two_el(self):
+        # given
+        queue = Queue()
+        queue.enqueue(10)
+        queue.enqueue(20)
+        ## -> 20 10 ->
+        # when
+        queue.reverse()
+        # then
+        self.assertEqual(2, queue.size())
+        self.assertEqual(20, queue.dequeue())
+        self.assertEqual(10, queue.dequeue())
+
+    def test_many_el(self):
+        # given
+        queue = self.create_and_fill_queue()
+        # when
+        queue.reverse()
+        # then
+        self.assertEqual(10, queue.size())
+        for i in range(9, -1, -1):
+            self.assertEqual(i, queue.dequeue())
+
+
+
+    def create_and_fill_queue(self):
+        queue = Queue()
+        for i in range(10):
+            queue.enqueue(i)
+        return queue
