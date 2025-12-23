@@ -2,6 +2,7 @@ import unittest
 
 from queue.task5 import Queue
 from queue.task5_2 import StackQueue
+from queue.task5_2 import CycledQueue
 
 if __name__ == "__main__":
     unittest.main()
@@ -318,6 +319,127 @@ class TestReverse(unittest.TestCase):
 
     def create_and_fill_queue(self):
         queue = Queue()
+        for i in range(10):
+            queue.enqueue(i)
+        return queue
+
+class TestCycledQueueEnqueueAndSize(unittest.TestCase):
+
+    def test_creation(self):
+        # given
+        # when
+        queue = CycledQueue(14)
+        # then
+        self.assertEqual(0, queue.size())
+
+    def test_single_el(self):
+        # given
+        queue = CycledQueue(14)
+        # when
+        queue.enqueue(1)
+        # then
+        self.assertEqual(1, queue.size())
+        self.assertEqual(1, queue.dequeue())
+
+    def test_two_el(self):
+        # given
+        queue = CycledQueue(3)
+        # when
+        queue.enqueue(10)
+        queue.enqueue(20)
+        # then
+        self.assertEqual(2, queue.size())
+        self.assertEqual(10, queue.dequeue())
+        self.assertEqual(20, queue.dequeue())
+
+    def test_overflow_el(self):
+        # given
+        queue = CycledQueue(3)
+        # when
+        queue.enqueue(10)
+        queue.enqueue(20)
+        queue.enqueue(30)
+        # then
+        self.assertEqual(3, queue.size())
+
+        with self.assertRaises(RuntimeError):
+            queue.enqueue(40)
+
+    def test_three_el(self):
+        # given
+        queue = CycledQueue(3)
+        # when
+        queue.enqueue(10)
+        queue.enqueue(20)
+        queue.enqueue(30)
+        # then
+        self.assertEqual(3, queue.size())
+        self.assertEqual(10, queue.dequeue())
+        self.assertEqual(20, queue.dequeue())
+        self.assertEqual(30, queue.dequeue())
+
+
+    def test_many_el(self):
+        # given
+        queue = CycledQueue(5)
+        # when
+        for i in range(5):
+            queue.enqueue(i)
+        # then
+        self.assertEqual(5, queue.size())
+        for i in range(5):
+            self.assertEqual(i, queue.dequeue())
+
+    def test_after_deque(self):
+        # given
+        queue = CycledQueue(10)
+        # when
+        for i in range(10):
+            queue.enqueue(i)
+        deq_el = queue.dequeue()
+        # then
+        self.assertEqual(9, queue.size())
+        self.assertEqual(0, deq_el)
+
+class TestCycledDequeueAndSize(unittest.TestCase):
+
+    def test_single_el(self):
+        # given
+        queue = CycledQueue(1)
+        queue.enqueue(1)
+        # when
+        el = queue.dequeue()
+        # then
+        self.assertEqual(0, queue.size())
+        self.assertEqual(1, el)
+
+    def test_one_el(self):
+        # given
+        queue = CycledQueue(2)
+        queue.enqueue(10)
+        queue.enqueue(20)
+        # when
+        el = queue.dequeue()
+        # then
+        self.assertEqual(10, el)
+        self.assertEqual(1, queue.size())
+
+    def test_many_el(self):
+        # given
+        queue = self.create_and_fill_queue()
+        # when
+        first = queue.dequeue()
+        middle = queue.dequeue()
+        last = queue.dequeue()
+        # then
+        self.assertEqual(7, queue.size())
+        self.assertEqual(0, first)
+        self.assertEqual(1, middle)
+        self.assertEqual(2, last)
+
+
+    def create_and_fill_queue(self):
+        queue = CycledQueue(10)
         for i in range(10):
             queue.enqueue(i)
         return queue
