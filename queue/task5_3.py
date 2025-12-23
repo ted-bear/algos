@@ -1,6 +1,7 @@
 import unittest
 
 from queue.task5 import Queue
+from queue.task5_2 import StackQueue
 
 if __name__ == "__main__":
     unittest.main()
@@ -179,3 +180,92 @@ class TestRotate(unittest.TestCase):
         self.assertEqual(4, queue.storage[1])
         self.assertEqual(3, queue.storage[2])
         self.assertEqual(2, queue.storage[3])
+
+class TestStackEnqueueAndSize(unittest.TestCase):
+
+    def test_creation(self):
+        # given
+        # when
+        queue = StackQueue()
+        # then
+        self.assertEqual(0, queue.size())
+
+    def test_single_el(self):
+        # given
+        queue = StackQueue()
+        # when
+        queue.enqueue(1)
+        # then
+        self.assertEqual(1, queue.size())
+
+    def test_two_el(self):
+        # given
+        queue = StackQueue()
+        # when
+        queue.enqueue(10)
+        queue.enqueue(20)
+        # then
+        self.assertEqual(2, queue.size())
+
+    def test_many_el(self):
+        # given
+        queue = StackQueue()
+        # when
+        for i in range(10):
+            queue.enqueue(i)
+        # then
+        self.assertEqual(10, queue.size())
+
+    def test_after_deque(self):
+        # given
+        queue = StackQueue()
+        # when
+        for i in range(10):
+            queue.enqueue(i)
+        deq_el = queue.dequeue()
+        # then
+        self.assertEqual(9, queue.size())
+        self.assertEqual(0, deq_el)
+
+class TestStackDequeueAndSize(unittest.TestCase):
+
+    def test_single_el(self):
+        # given
+        queue = StackQueue()
+        queue.enqueue(1)
+        # when
+        el = queue.dequeue()
+        # then
+        self.assertEqual(0, queue.size())
+        self.assertEqual(1, el)
+
+    def test_one_el(self):
+        # given
+        queue = StackQueue()
+        queue.enqueue(10)
+        queue.enqueue(20)
+        # when
+        el = queue.dequeue()
+        # then
+        self.assertEqual(10, el)
+        self.assertEqual(1, queue.size())
+
+    def test_many_el(self):
+        # given
+        queue = self.create_and_fill_queue()
+        # when
+        first = queue.dequeue()
+        middle = queue.dequeue()
+        last = queue.dequeue()
+        # then
+        self.assertEqual(7, queue.size())
+        self.assertEqual(0, first)
+        self.assertEqual(1, middle)
+        self.assertEqual(2, last)
+
+
+    def create_and_fill_queue(self):
+        queue = StackQueue()
+        for i in range(10):
+            queue.enqueue(i)
+        return queue

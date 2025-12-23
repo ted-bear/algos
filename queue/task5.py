@@ -41,7 +41,7 @@ class Queue:
 
     def rotate(self, count):
         """
-        Exercise 5.3.
+        Exercise 5.3. Rotation
 
         Рефлексия: Сначала сделал очередь на связном списке
         потом понял, что тогда вращение будет за Линейное
